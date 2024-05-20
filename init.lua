@@ -86,8 +86,13 @@ end
 
 -- setup with some options
 require("nvim-tree").setup({
-	on_attach = my_on_attach
+	on_attach = my_on_attach,
+	update_focused_file = {
+		enable = true
+	}
+
 })
+
 --------------------
 
 -- Some servers have issues with backup files, see #649
