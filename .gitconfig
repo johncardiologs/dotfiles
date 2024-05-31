@@ -1,0 +1,16 @@
+[user]
+	name = "first last"
+	email = "<your_email>"
+	signingkey = "<path/to/your/key>"
+[init]
+	defaultBranch = main
+[gpg]
+	format = ssh
+[core]
+	editor = nvim
+[alias]
+	pushfwl = push --force-with-lease
+[commit]
+	gpgsign = true
+[rerere]
+	enabled = true
