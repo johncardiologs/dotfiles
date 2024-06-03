@@ -551,7 +551,7 @@ require("lazy").setup({
 				--    https://github.com/pmizio/typescript-tools.nvim
 				--
 				-- But for many setups, the LSP (`tsserver`) will work just fine
-				-- tsserver = {},
+				tsserver = {},
 				--
 
 				lua_ls = {
@@ -564,7 +564,7 @@ require("lazy").setup({
 								callSnippet = "Replace",
 							},
 							-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-							-- diagnostics = { disable = { 'missing-fields' } },
+							diagnostics = { disable = { "missing-fields" } },
 						},
 					},
 				},
@@ -600,7 +600,13 @@ require("lazy").setup({
 			})
 		end,
 	},
-
+	{
+		"akinsho/git-conflict.nvim",
+		config = true,
+	},
+	{
+		"ruanyl/vim-gh-line",
+	},
 	{ -- Autoformat
 		"stevearc/conform.nvim",
 		lazy = false,
@@ -632,11 +638,10 @@ require("lazy").setup({
 				typescript = { "prettier" },
 				javascriptreact = { "prettier" },
 				typescriptreact = { "prettier" },
-				css = { "prettier" },
+				-- css = { "prettier" },
 				html = { "prettier" },
-				json = { "prettier" },
-				yaml = { "prettier" },
-				markdown = { "prettier" },
+				-- json = { "prettier" },
+				-- yaml = { "prettier" },
 				-- Conform can also run multiple formatters sequentially
 				-- python = { "isort", "black" },
 				--
@@ -646,7 +651,13 @@ require("lazy").setup({
 			},
 		},
 	},
-
+	{
+		"stonemaster/import-sort.nvim",
+		event = "BufEnter",
+		config = function()
+			require("import-sort")
+		end,
+	},
 	{ -- Autocompletion
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
