@@ -8,10 +8,12 @@
 	format = ssh
 [core]
 	editor = nvim
-[alias]
-	pushfwl = push --force-with-lease
+[color]
+	ui = auto
 [commit]
 	gpgsign = true
+[alias]
+	pushfwl = push --force-with-lease
 [rerere]
 	enabled = true
 [push]
