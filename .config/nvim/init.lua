@@ -3,6 +3,7 @@
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+vim.g.loaded_node_provider = 0
 
 -- vim.api.nvim_set_keymap('n', '<c-P>',
 --     "<cmd>lua require('fzf-lua').files({ cmd='git ls-files' })<CR>",
@@ -183,7 +184,7 @@ require("lazy").setup({
 	{ -- Fuzzy Finder (files, lsp, etc)
 		"nvim-telescope/telescope.nvim",
 		event = "VimEnter",
-		branch = "0.1.x",
+		version = "*",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			{ -- If encountering errors, see telescope-fzf-native README for installation instructions
@@ -422,6 +423,23 @@ require("lazy").setup({
 						vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 					end
 
+					local dotnet_keybinds = function()
+						map("gd", require("omnisharp_extended").telescope_lsp_definition, "[G]oto [D]efinition")
+						map("gr", require("omnisharp_extended").telescope_lsp_references, "[G]oto [R]eferences")
+						map("gI", require("omnisharp_extended").telescope_lsp_implementation, "[G]oto [I]mplementation")
+						map(
+							"<leader>D",
+							require("omnisharp_extended").telescope_lsp_type_definition,
+							"Type [D]efinition"
+						)
+					end
+
+					vim.api.nvim_create_autocmd("FileType", {
+						pattern = "cs",
+						callback = dotnet_keybinds,
+						once = true,
+					})
+
 					-- Jump to the definition of the word under your cursor.
 					--  This is where a variable was first declared, or where a function is defined, etc.
 					--  To jump back, press <C-t>.
@@ -536,7 +554,7 @@ require("lazy").setup({
 				--    https://github.com/pmizio/typescript-tools.nvim
 				--
 				-- But for many setups, the LSP (`tsserver`) will work just fine
-				vtsls = {},
+				-- vtsls = {},
 				gopls = {},
 
 				lua_ls = {
@@ -590,6 +608,9 @@ require("lazy").setup({
 		config = true,
 	},
 	{
+		"Hoffs/omnisharp-extended-lsp.nvim",
+	},
+	{
 		"ruanyl/vim-gh-line",
 	},
 	{ -- Autoformat
@@ -625,7 +646,7 @@ require("lazy").setup({
 				typescriptreact = { "prettier" },
 				-- css = { "prettier" },
 				html = { "prettier" },
-				-- json = { "prettier" },
+				json = { "prettier" },
 				-- yaml = { "prettier" },
 				-- Conform can also run multiple formatters sequentially
 				-- python = { "isort", "black" },
@@ -901,21 +922,6 @@ require("lazy").setup({
 			},
 			indent = { enable = true, disable = { "ruby" } },
 		},
-		config = function(_, opts)
-			-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-
-			-- Prefer git instead of curl in order to improve connectivity in some environments
-			require("nvim-treesitter.install").prefer_git = true
-			---@diagnostic disable-next-line: missing-fields
-			require("nvim-treesitter.configs").setup(opts)
-
-			-- There are additional nvim-treesitter modules that you can use to interact
-			-- with nvim-treesitter. You should go explore a few and see what interests you:
-			--
-			--    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-			--    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-			--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-		end,
 	},
 
 	-- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
